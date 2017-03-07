@@ -218,4 +218,13 @@ is $file->spurt('w', 'orks', ' too!')->slurp, 'works too!', 'right content';
   like $@, qr/Can't write to file ".*/, 'right error';
 }
 
+# Mode
+$dir  = tempdir;
+$file = $dir->child('test.txt')->spurt('just works!');
+is $file->chmod(0400)->slurp, 'just works!', 'right content';
+eval { $file->spurt('works not!') };
+ok $@, 'has error';
+is $file->chmod(0600)->spurt('works too!')->slurp, 'works too!',
+  'right content';
+
 done_testing();

@@ -25,6 +25,12 @@ sub basename { File::Basename::basename ${$_[0]}, @_ }
 
 sub child { $_[0]->new(@_) }
 
+sub chmod {
+  my ($self, $mode) = @_;
+  chmod $mode, $$self or croak qq{Can't chmod file "$$self": $!};
+  return $self;
+}
+
 sub copy_to {
   my ($self, $to) = @_;
   copy($$self, $to) or croak qq{Can't copy file "$$self" to "$to": $!};
@@ -235,6 +241,12 @@ Return a new L<Mojo::File> object relative to the path.
 
   # "/home/sri/.vimrc" (on UNIX)
   path('/home')->child('sri', '.vimrc');
+
+=head2 chmod
+
+  $path = $path->chmod(0644);
+
+Change permissions of a file.
 
 =head2 copy_to
 
