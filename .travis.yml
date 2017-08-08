@@ -20,7 +20,10 @@ env:
     - TEST_TLS=1
 install:
   - cpanm -n EV IO::Socket::Socks IO::Socket::SSL Net::DNS::Native Role::Tiny Test::Pod Test::Pod::Coverage
+  - cpanm -n Devel::Cover
   - cpanm -n --installdeps .
 sudo: false
 notifications:
   email: false
+script:
+    - perl Makefile.PL && make && cover -test -report kritika
